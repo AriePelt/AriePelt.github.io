@@ -15,27 +15,32 @@
       // draws it.
       function drawChart() {
         // Load data from csv file
-        var chartData = new google.visualization.Query('./data/pizza.csv');
-        
-        // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night using csv',
-                       'width':400,
-                       'height':300};
-
-        // Send the query with a callback function to handle the response
-        chartData.send(function(response) {
-          if (response.isError()) {
-            console.error('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-            return;
-          }
-
-          // Create a DataTable from the response
-          var data = response.getDataTable();
-          
-          // Instantiate and draw our chart, passing in some options.
-          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-          chart.draw(data, options);
-        });
+        fetch('./data/pizza.csv')
+          .then(response => response.text())
+          .then(csvText => {
+            // Parse CSV
+            const rows = csvText.trim().split('\n').map(row => row.split(','));
+            // Create DataTable
+            const data = new google.visualization.DataTable();
+            // Assume first row is header
+            data.addColumn('string', rows[0][0]);
+            data.addColumn('number', rows[0][1]);
+            for (let i = 1; i < rows.length; i++) {
+              data.addRow([rows[i][0], Number(rows[i][1])]);
+            }
+            // Chart options
+            const options = {
+              'title': 'How Much Pizza I Ate Last Night using csv',
+              'width': 400,
+              'height': 300
+            };
+            // Draw chart
+            const chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          })
+          .catch(error => {
+            console.error('Error loading CSV:', error);
+          });
       }
     </script>
   </head>
