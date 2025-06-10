@@ -14,27 +14,28 @@
       // instantiates the pie chart, passes in the data and
       // draws it.
       function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
-        ]);
-
+        // Load data from csv file
+        var chartData = new google.visualization.Query('./data/pizza.csv');
+        
         // Set chart options
         var options = {'title':'How Much Pizza I Ate Last Night',
                        'width':400,
                        'height':300};
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+        // Send the query with a callback function to handle the response
+        chartData.send(function(response) {
+          if (response.isError()) {
+            console.error('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+          }
+
+          // Create a DataTable from the response
+          var data = response.getDataTable();
+          
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+        });
       }
     </script>
   </head>
