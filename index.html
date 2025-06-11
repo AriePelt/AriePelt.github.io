@@ -59,8 +59,8 @@
               'height': 300
             };
             // Draw chart
-            var chart = new google.visualization.Line(document.getElementById('chart_div'));
-            chart.draw(data, options);
+            var chart = new google.charts.Line(document.getElementById('chart_div'));
+            chart.draw(data, google.charts.Line.convertOptions(options));
           })
           .catch(error => {
             console.error('Error loading CSV:', error);
