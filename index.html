@@ -5,7 +5,7 @@
     <script type="text/javascript">
 
       // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['line', 'corechart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawChart);
@@ -15,27 +15,50 @@
       // draws it.
       function drawChart() {
         // Load data from csv file
-        fetch('./data/pizza.csv')
+        fetch('./data/48/crr.csv')
           .then(response => response.text())
           .then(csvText => {
             // Parse CSV
-            const rows = csvText.trim().split('\n').map(row => row.split(','));
+            var rows = csvText.trim().split('\n').map(row => row.split(','));
+            
             // Create DataTable
-            const data = new google.visualization.DataTable();
-            // Assume first row is header
-            data.addColumn('string', rows[0][0]);
-            data.addColumn('number', rows[0][1]);
+            var data = new google.visualization.DataTable();
+
+            data.addColumn('number', 'Time');
+            data.addColumn('number', 'ItemCount');
+
+            // data.addColumn('string', 'ItemUsed');
+            // data.addColumn('number', 'ItemCount');
+            // data.addColumn('number', 'ItemPrice');
+            // data.addColumn('number', 'ActionCount');
+            
+            // data.addColumn('number', 'Day');
+
+            // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
-              data.addRow([rows[i][0], Number(rows[i][1])]);
+              // var day = Math.floor(Number(rows[i][10]) / 86400);
+
+              data.addRow([
+                Number(rows[i][10]), // Time in seconds
+                Number(Math(Number(rows[i][4]) * Number(rows[i][13]))), // ItemCount
+                // day, 
+                // Number(rows[i][4]), 
+                // Number(rows[i][3]), 
+                // Number(rows[i][13]), 
+                // Number(rows[i][14])
+              ]);
             }
             // Chart options
-            const options = {
-              'title': 'How Much Pizza I Ate Last Night using csv',
+            var options = {
+              chart: {
+                title: 'White Tiger economic data',
+                subtitle: 'Item Count over Time'
+              },
               'width': 400,
               'height': 300
             };
             // Draw chart
-            const chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.Line(document.getElementById('chart_div'));
             chart.draw(data, options);
           })
           .catch(error => {
