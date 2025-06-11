@@ -38,11 +38,11 @@
             for (let i = 1; i < rows.length; i++) {
               // var day = Math.floor(Number(rows[i][10]) / 86400);
               // var count = Number(rows[i][4]) * Number(rows[i][13]);
-              console.log(i, rows[i][14], rows[i][4], rows[i][13]);
+              console.log(i, Number(rows[i][16]), Number(rows[i][4]), Number(rows[i][15]));
 
               data.addRow([
-                Number(rows[i][14]), // Time in seconds
-                Number(rows[i][4]) * Number(rows[i][13]) // ItemCount
+                Number(rows[i][16]), // Time in seconds
+                Number(rows[i][4]) * Number(rows[i][15]) // ItemCount
                 // day, 
                 // Number(rows[i][4]), 
                 // Number(rows[i][3]), 
