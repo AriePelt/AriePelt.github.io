@@ -37,10 +37,11 @@
             // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
               // var day = Math.floor(Number(rows[i][10]) / 86400);
+              var count = Math(Number(rows[i][4]) * Number(rows[i][13]));
 
               data.addRow([
                 Number(rows[i][10]), // Time in seconds
-                Number(Math(Number(rows[i][4]) * Number(rows[i][13]))), // ItemCount
+                count
                 // day, 
                 // Number(rows[i][4]), 
                 // Number(rows[i][3]), 
