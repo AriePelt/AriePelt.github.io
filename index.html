@@ -34,7 +34,7 @@
 
               data.addRow([
                 Number(rows[i][16]),                      // Time in seconds
-                rows[i][10],                              // ItemUsed
+                rows[i][10].replace(/Item/gi, ''),        // ItemUsed
                 Number(rows[i][4]) * Number(rows[i][15])  // ItemCount
                 // day, 
                 // Number(rows[i][4]), 
@@ -55,7 +55,7 @@
                 filterColumnLabel: 'ItemUsed',
                 ui: {
                   label: 'Select ItemUsed',
-                  allowTyping: false,
+                  allowTyping: true,
                   allowMultiple: false,
                   allowNone: false
                 }
