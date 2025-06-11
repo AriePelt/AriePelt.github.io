@@ -27,6 +27,7 @@
             data.addColumn('number', 'Time');
             data.addColumn('string', 'ItemUsed');
             data.addColumn('number', 'ItemCount');
+            data.addColumn('number', 'Price');
 
             // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
@@ -35,7 +36,8 @@
               data.addRow([
                 Number(rows[i][16]) / 86400,                            // Time in days
                 rows[i][10].replace(/Item/gi, '').replace(/["]/g, ''),  // ItemUsed
-                Number(rows[i][4]) * Number(rows[i][15])                // ItemCount
+                Number(rows[i][4]) * Number(rows[i][15]),               // ItemCount
+                Number(rows[i][3]) / Number(rows[i][4])                 // Price
               ]);
             }
 
@@ -67,8 +69,10 @@
               height: 500,
               hAxis: {
                 title: 'Time (seconds)',
-                min: 0
+                viewWindow: {
+                  min: 0
                 }
+              }
             };
 
             // Create the chart
