@@ -8,12 +8,12 @@
       google.charts.load('current', {'packages':['line', 'corechart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawStuff);
 
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
-      function drawChart() {
+      function drawStuff() {
         // Load data from csv file
         fetch('./data/48/crr.csv')
           .then(response => response.text())
@@ -25,24 +25,17 @@
             var data = new google.visualization.DataTable();
 
             data.addColumn('number', 'Time');
+            data.addColumn('string', 'ItemUsed');
             data.addColumn('number', 'ItemCount');
-
-            // data.addColumn('string', 'ItemUsed');
-            // data.addColumn('number', 'ItemCount');
-            // data.addColumn('number', 'ItemPrice');
-            // data.addColumn('number', 'ActionCount');
-            
-            // data.addColumn('number', 'Day');
 
             // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
-              // var day = Math.floor(Number(rows[i][10]) / 86400);
-              // var count = Number(rows[i][4]) * Number(rows[i][13]);
-              console.log(i, Number(rows[i][16]), Number(rows[i][4]), Number(rows[i][15]));
+              // console.log(i, Number(rows[i][16]), Number(rows[i][4]), Number(rows[i][15]));
 
               data.addRow([
-                Number(rows[i][16]), // Time in seconds
-                Number(rows[i][4]) * Number(rows[i][15]) // ItemCount
+                Number(rows[i][16]),                      // Time in seconds
+                rows[i][10],                              // ItemUsed
+                Number(rows[i][4]) * Number(rows[i][15])  // ItemCount
                 // day, 
                 // Number(rows[i][4]), 
                 // Number(rows[i][3]), 
@@ -50,18 +43,48 @@
                 // Number(rows[i][14])
               ]);
             }
+
+            // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+
+            // Create a filter control for ItemUsed
+            var itemFilter = new google.visualization.ControlWrapper({
+              controlType: 'CategoryFilter',
+              containerId: 'filter_div',
+              options: {
+                filterColumnLabel: 'ItemUsed',
+                ui: {
+                  label: 'Select ItemUsed',
+                  allowTyping: false,
+                  allowMultiple: false,
+                  allowNone: false
+                }
+              }
+            });
+
             // Chart options
             var options = {
               chart: {
                 title: 'White Tiger economic data',
                 subtitle: 'Item Count over Time'
               },
-              'width': 400,
-              'height': 300
+              'width': 900,
+              'height': 500
             };
-            // Draw chart
-            var chart = new google.charts.Line(document.getElementById('chart_div'));
-            chart.draw(data, google.charts.Line.convertOptions(options));
+
+            // Create the chart
+            var chart = new google.visualization.ChartWrapper({
+              'chartType': 'Line',
+              'containerId': 'chart_div',
+              'options': options,
+              view: {'columns': [0, 2]} // Only show Time and ItemCount
+            });
+
+            // Bind the filter to the chart
+            dashboard.bind(itemFilter, chart);
+
+            // Draw the dashboard
+            dashboard.draw(data);
           })
           .catch(error => {
             console.error('Error loading CSV:', error);
@@ -71,7 +94,11 @@
   </head>
 
   <body>
-    <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+    <!--Div that will hold the dashboard-->
+    <div id="dashboard_div"> 
+      <!--Div that will hold the pie chart-->
+      <div id="filter_div"></div>
+      <div id="chart_div"></div>
+    </div>
   </body>
 </html>
