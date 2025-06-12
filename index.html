@@ -2,10 +2,11 @@
   <head>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script type="text/javascript">
 
       // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['controls', 'line']});
+      google.charts.load('current', {'packages':['controls', 'corechart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawStuff);
@@ -20,6 +21,7 @@
           .then(csvText => {
             // Parse CSV
             var rows = csvText.trim().split('\n').map(row => row.split(','));
+            // var rows = Papa.parse(csvText, { skipEmptyLines: true }).data;
             
             // Create DataTable
             var data = new google.visualization.DataTable();
@@ -61,23 +63,23 @@
 
             // Chart options
             var options = {
-              chart: {
-                title: 'White Tiger economic data',
-                subtitle: 'Item Count over Time'
-              },
+              title: 'White Tiger economic data',
+              subtitle: 'Item Count over Time',
+              curveType: 'function',
               width: 900,
               height: 500,
-              hAxes: {
+              hAxis: {
                 title: 'Time (days)',
-                viewWindow: {
-                  min: 0
+                  viewWindow: {
+                  min: 0,
+                  max: 100
                 }
               }
             };
 
             // Create the chart
             var chart = new google.visualization.ChartWrapper({
-              'chartType': 'Line',
+              'chartType': 'LineChart',
               'containerId': 'chart_div',
               'options': options,
               view: {'columns': [0, 2]} // Only show Time and ItemCount
