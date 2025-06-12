@@ -56,19 +56,6 @@
             }
 
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
-            var itemFilter = new google.visualization.ControlWrapper({
-              controlType: 'CategoryFilter',
-              containerId: filterId,
-              options: {
-                filterColumnLabel: 'ItemUsed',
-                ui: {
-                  label: 'Select ItemUsed',
-                  allowTyping: true,
-                  allowMultiple: false,
-                  allowNone: false
-                }
-              }
-            });
 
             var options = {
               title: `White Tiger economic data - ${crop}`,
@@ -87,7 +74,7 @@
               },
               hAxis: {
                 title: 'Time (days)',
-                viewWindow: { min: 0 , max: 35}
+                viewWindow: { min: 0, max: 35 }
               }
             };
 
@@ -98,7 +85,7 @@
               view: { columns: [0, 2, 3] }
             });
 
-            dashboard.bind(itemFilter, chart);
+            dashboard.bind(chart);
             dashboard.draw(data);
           });
       }
