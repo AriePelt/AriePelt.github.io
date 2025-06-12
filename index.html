@@ -20,8 +20,8 @@
           .then(response => response.text())
           .then(csvText => {
             // Parse CSV
-            var rows = csvText.trim().split('\n').map(row => row.split(','));
-            // var rows = Papa.parse(csvText, { skipEmptyLines: true }).data;
+            // var rows = csvText.trim().split('\n').map(row => row.split(','));
+            var rows = Papa.parse(csvText, { skipEmptyLines: true }).data;
             
             // Create DataTable
             var data = new google.visualization.DataTable();
@@ -33,7 +33,7 @@
 
             // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
-              // console.log(i, Number(rows[i][16]), Number(rows[i][4]), Number(rows[i][15]));
+              console.log(i, Number(rows[i][4]), Number(rows[i][14]), Number(rows[i][15]));
 
               data.addRow([
                 Number(rows[i][16]) / 86400,                            // Time in days
@@ -72,7 +72,7 @@
                 title: 'Time (days)',
                   viewWindow: {
                   min: 0,
-                  max: 100
+                  max: 35
                 }
               }
             };
