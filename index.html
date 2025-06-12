@@ -28,8 +28,8 @@
 
             data.addColumn('number', 'Time');
             data.addColumn('string', 'ItemUsed');
-            data.addColumn('number', 'ItemCount');
             data.addColumn('number', 'Price');
+            data.addColumn('number', 'ItemCount');
 
             // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
@@ -38,8 +38,8 @@
               data.addRow([
                 Number(rows[i][14]) / 86400,                            // Time in days
                 rows[i][10].replace(/Item/gi, '').replace(/["]/g, ''),  // ItemUsed
-                Number(rows[i][4]) * Number(rows[i][13]),               // ItemCount
-                Number(rows[i][3]) / Number(rows[i][4])                 // Price
+                Number(rows[i][3]) / Number(rows[i][4]),                // Price
+                Number(rows[i][4]) * Number(rows[i][13])                // ItemCount
               ]);
             }
 
@@ -72,8 +72,12 @@
                 1: {targetAxisIndex: 1} 
               },
               vAxes: {
-                0: {title: 'ItemCount'},
-                1: {title: 'Price'}
+                0: {title: 'Price'},
+                1: {
+                  title: 'ItemCount',
+                  viewWindow: {
+                    min: 0
+                  }
               },
               hAxis: {
                 title: 'Time (days)',
