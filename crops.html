@@ -82,12 +82,12 @@
                 1: { type: 'bars', targetAxisIndex: 1, color: '#5fa044' }
               },
               vAxes: {
-                0: { title: 'Price' },
+                0: { title: 'Price', viewWindow: { min: 0 } },
                 1: { title: 'ItemCount' }
               },
               hAxis: {
                 title: 'Time (days)',
-                viewWindow: { min: 0 }
+                viewWindow: { min: 0 , max: 35}
               }
             };
 
