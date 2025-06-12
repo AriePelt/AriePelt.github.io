@@ -65,19 +65,19 @@
             var options = {
               title: 'White Tiger economic data',
               curveType: 'function',
+              seriesType: 'bars',
               width: 900,
               height: 500,
               series: {
-                0: {targetAxisIndex: 0},
-                1: {targetAxisIndex: 1} 
+                0: {type: 'line', targetAxisIndex: 0},
+                1: {type: 'bars', targetAxisIndex: 1} 
               },
               vAxes: {
                 0: {
                   title: 'Price'
                 },
                 1: {
-                  title: 'ItemCount',
-                  type: 'bars',
+                  title: 'ItemCount'
                   // viewWindow: {
                   //   min: 0
                   // }
