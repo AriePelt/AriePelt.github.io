@@ -14,10 +14,10 @@
       var cycle = getQueryParam('cycle', 48);
 
       function init() {
-        fetch('tags.json')
+        fetch('./data/tags.json')
           .then(response => response.json())
           .then(tags => {
-            tags.forEach(crop => {
+            tags[0].crop.forEach(crop => {
               // Create a container for each crop chart
               const div = document.createElement('div');
               div.id = `dashboard_div_${crop}`;
