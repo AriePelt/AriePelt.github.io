@@ -43,17 +43,31 @@
             data.addColumn('number', 'Price');
             data.addColumn('number', 'ItemCount');
 
+            let totalItemCount = 0;
+
             for (let i = 1; i < rows.length; i++) {
               const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
               if (itemUsed === crop) {
+              const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
+              totalItemCount += itemCount;
                 data.addRow([
                   Number(rows[i][14]) / 86400,
                   itemUsed,
                   Number(rows[i][3]) / Number(rows[i][4]),
-                  Number(rows[i][4]) * Number(rows[i][13])
+                  itemCount
                 ]);
               }
             }
+
+            // Display total ItemCount above the chart
+            const dashboardDiv = document.getElementById(dashboardId);
+            let totalDiv = dashboardDiv.querySelector('.total-itemcount');
+            if (!totalDiv) {
+              totalDiv = document.createElement('div');
+              totalDiv.className = 'total-itemcount';
+              dashboardDiv.insertBefore(totalDiv, dashboardDiv.firstChild);
+            }
+            totalDiv.innerHTML = `<strong>Total ItemCount for ${crop}: ${totalItemCount}</strong>`;
 
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
             var itemFilter = new google.visualization.ControlWrapper({
