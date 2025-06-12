@@ -72,12 +72,15 @@
                 1: {targetAxisIndex: 1} 
               },
               vAxes: {
-                0: {title: 'Price'},
+                0: {
+                  title: 'Price'
+                },
                 1: {
                   title: 'ItemCount',
-                  viewWindow: {
-                    min: 0
-                  }
+                  type: 'bars',
+                  // viewWindow: {
+                  //   min: 0
+                  // }
                 }
               },
               hAxis: {
@@ -91,7 +94,7 @@
 
             // Create the chart
             var chart = new google.visualization.ChartWrapper({
-              'chartType': 'LineChart',
+              'chartType': 'ComboChart',
               'containerId': 'chart_div',
               'options': options,
               view: {'columns': [0, 2, 3]} // Show Time + ItemCount/Price in the chart
