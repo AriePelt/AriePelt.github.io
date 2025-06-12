@@ -56,6 +56,19 @@
             }
 
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
+            var itemFilter = new google.visualization.ControlWrapper({
+              controlType: 'CategoryFilter',
+              containerId: filterId,
+              options: {
+                filterColumnLabel: 'ItemUsed',
+                ui: {
+                  label: 'Select ItemUsed',
+                  allowTyping: true,
+                  allowMultiple: false,
+                  allowNone: false
+                }
+              }
+            });
 
             var options = {
               title: `White Tiger economic data - ${crop}`,
@@ -85,7 +98,7 @@
               view: { columns: [0, 2, 3] }
             });
 
-            dashboard.bind(chart);
+            dashboard.bind(itemFilter, chart);
             dashboard.draw(data);
           });
       }
