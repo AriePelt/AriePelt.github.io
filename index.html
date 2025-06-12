@@ -33,7 +33,7 @@
 
             // Add rows to DataTable
             for (let i = 1; i < rows.length; i++) {
-              console.log(i, Number(rows[i][4]), Number(rows[i][13]), Number(rows[i][14]));
+              // console.log(i, Number(rows[i][4]), Number(rows[i][13]), Number(rows[i][14]));
 
               data.addRow([
                 Number(rows[i][14]) / 86400,                            // Time in days
@@ -64,10 +64,17 @@
             // Chart options
             var options = {
               title: 'White Tiger economic data',
-              subtitle: 'Item Count over Time',
               curveType: 'function',
               width: 900,
               height: 500,
+              series: {
+                0: {targetAxisIndex: 0},
+                1: {targetAxisIndex: 1} 
+              },
+              vAxes: {
+                0: {title: 'ItemCount'},
+                1: {title: 'Price'}
+              },
               hAxis: {
                 title: 'Time (days)',
                   viewWindow: {
@@ -82,7 +89,7 @@
               'chartType': 'LineChart',
               'containerId': 'chart_div',
               'options': options,
-              view: {'columns': [0, 2]} // Only show Time and ItemCount
+              view: {'columns': [0, 2, 3]} // Show Time + ItemCount/Price in the chart
             });
 
             // Bind the filter to the chart
