@@ -35,6 +35,7 @@
         }
 
         function drawTagChart(tag, dashboardId, filterId, chartId) {
+            console.log(`Drawing chart for tag: ${tag}`);
             fetch(`./data/${cycle}/crr.csv`)
             .then(response => response.text())
             .then(csvText => {
