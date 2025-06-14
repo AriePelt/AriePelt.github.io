@@ -78,8 +78,15 @@
                             day,
                             itemUsed,
                             price,
-                            itemCount
+                            null
                         ]);
+                        data.addRow([
+                            daykey,
+                            itemUsed,
+                            null,
+                            itemCountPerDay[daykey]
+                        ]);
+                        
                     }
             }
 
