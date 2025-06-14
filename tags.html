@@ -186,7 +186,7 @@
               seriesType: 'bars',
               // bar: { groupWidth: '200%' },
               width: 900,
-              height: 500,
+              height: 300,
               series: {
                 0: { type: 'line', targetAxisIndex: 0 },
                 1: { type: 'bars', targetAxisIndex: 1, color: '#5fa044' }
@@ -221,7 +221,7 @@
                     width: 900,
                     height: 300,
                     legend: { position: 'none' },
-                    hAxis: { title: 'Day' },
+                    hAxis: { title: 'Day', viewWindow: { min: 0, max: 35 } },
                     vAxis: { title: 'ItemCount' },
                     colors: ['#5fa044']
                 }
