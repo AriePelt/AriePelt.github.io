@@ -1,0 +1,126 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['controls', 'corechart']});
+        google.charts.setOnLoadCallback(init);
+
+        function getQueryParam(name, defaultValue) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name) || defaultValue;
+        }
+
+        var cycle = getQueryParam('cycle', 48);
+        var tag = 'crop';
+
+        function init() {
+            fetch('./data/tags.json')
+            .then(response => response.json())
+            .then(tags => {
+                tags[0].$tag.forEach(item => {
+                // Create a container for each crop chart
+                const div = document.createElement('div');
+                div.id = `dashboard_div_${item}`;
+                div.innerHTML = `
+                    <h3>${item}</h3>
+                    <div id="filter_div_${item}"></div>
+                    <div id="chart_div_${item}"></div>
+                `;
+                document.body.appendChild(div);
+                drawTagChart(`${tag}`, div.id, `filter_div_${item}`, `chart_div_${item}`);
+                });
+            });
+        }
+
+        function drawTagChart(tag, dashboardId, filterId, chartId) {
+            fetch(`./data/${cycle}/crr.csv`)
+            .then(response => response.text())
+            .then(csvText => {
+                var rows = Papa.parse(csvText, { skipEmptyLines: true }).data;
+                var data = new google.visualization.DataTable();
+                data.addColumn('number', 'Time');
+                data.addColumn('string', 'ItemUsed');
+                data.addColumn('number', 'Price');
+                data.addColumn('number', 'ItemCount');
+
+                let totalItemCount = 0;
+
+                for (let i = 1; i < rows.length; i++) {
+                const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
+                if (itemUsed === `${tag}`) {
+                const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
+                totalItemCount += itemCount;
+                    data.addRow([
+                    Number(rows[i][14]) / 86400,
+                    itemUsed,
+                    Number(rows[i][3]) / Number(rows[i][4]),
+                    itemCount
+                    ]);
+                }
+            }
+
+            // Display total ItemCount above the chart
+            const dashboardDiv = document.getElementById(dashboardId);
+            let totalDiv = dashboardDiv.querySelector('.total-itemcount');
+            if (!totalDiv) {
+              totalDiv = document.createElement('div');
+              totalDiv.className = 'total-itemcount';
+              dashboardDiv.insertBefore(totalDiv, dashboardDiv.firstChild);
+            }
+            totalDiv.innerHTML = `<strong>Total ItemCount for ${crop}: ${totalItemCount}</strong>`;
+
+            var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
+            var itemFilter = new google.visualization.ControlWrapper({
+              controlType: 'CategoryFilter',
+              containerId: filterId,
+              options: {
+                filterColumnLabel: 'ItemUsed',
+                ui: {
+                  label: 'Select ItemUsed',
+                  allowTyping: true,
+                  allowMultiple: false,
+                  allowNone: false
+                }
+              }
+            });
+
+            var options = {
+              title: `White Tiger economic data - ${crop}`,
+              curveType: 'function',
+              seriesType: 'bars',
+              bar: { groupWidth: '80%' },
+              width: 900,
+              height: 500,
+              series: {
+                0: { type: 'line', targetAxisIndex: 0 },
+                1: { type: 'bars', targetAxisIndex: 1, color: '#5fa044' }
+              },
+              vAxes: {
+                0: { title: 'Price', viewWindow: { min: 0 } },
+                1: { title: 'ItemCount' }
+              },
+              hAxis: {
+                title: 'Time (days)',
+                viewWindow: { min: 0, max: 35 }
+              }
+            };
+
+            var chart = new google.visualization.ChartWrapper({
+              chartType: 'ComboChart',
+              containerId: chartId,
+              options: options,
+              view: { columns: [0, 2, 3] }
+            });
+
+            dashboard.bind(itemFilter, chart);
+            dashboard.draw(data);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <h2>${tag} Charts</h2>
+    <!-- Charts will be appended here -->
+  </body>
+</html>
