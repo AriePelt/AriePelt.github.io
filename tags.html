@@ -76,38 +76,54 @@
                     }
             }
 
-            // Create a wrapper div for layout
             const dashboardDiv = document.getElementById(dashboardId);
-            dashboardDiv.style.display = 'flex';
-            dashboardDiv.style.alignItems = 'flex-start';
-            
+            dashboardDiv.style.display = 'block'; // or remove this line
+
+            // Create or update the header at the very top
+            let header = dashboardDiv.querySelector('.dashboard-header');
+            if (!header) {
+            header = document.createElement('h2');
+            header.className = 'dashboard-header';
+            dashboardDiv.insertBefore(header, dashboardDiv.firstChild);
+            }
+            header.textContent = item;
+
+            // Create or select the flex container for chart and table
+            let flexContainer = dashboardDiv.querySelector('.chart-table-flex');
+            if (!flexContainer) {
+            flexContainer = document.createElement('div');
+            flexContainer.className = 'chart-table-flex';
+            flexContainer.style.display = 'flex';
+            flexContainer.style.alignItems = 'flex-start';
+            dashboardDiv.appendChild(flexContainer);
+            }
+
+            // Move or create chart/filter container inside flex container
+            let chartFilterContainer = flexContainer.querySelector('.chart-filter-container');
+            if (!chartFilterContainer) {
+            chartFilterContainer = document.createElement('div');
+            chartFilterContainer.className = 'chart-filter-container';
+            chartFilterContainer.appendChild(document.getElementById(filterId));
+            chartFilterContainer.appendChild(document.getElementById(chartId));
+            flexContainer.appendChild(chartFilterContainer);
+            }
+
             // Create or select the table for total ItemCount
-            let tableDiv = dashboardDiv.querySelector('.total-itemcount-table');
+            let tableDiv = flexContainer.querySelector('.total-itemcount-table');
             if (!tableDiv) {
-                tableDiv = document.createElement('div');
-                tableDiv.className = 'total-itemcount-table';
-                tableDiv.style.marginLeft = '24px';
-                dashboardDiv.appendChild(tableDiv);
+            tableDiv = document.createElement('div');
+            tableDiv.className = 'total-itemcount-table';
+            tableDiv.style.marginLeft = '24px';
+            flexContainer.appendChild(tableDiv);
             }
 
             // Set the table HTML
             tableDiv.innerHTML = `
-            <h3> Total statistics </h3>
+            <h3>Total statistics</h3>
             <table border="1" style="border-collapse:collapse;">
                 <tr><td>Total sold</td><td>${totalItemCount}</td></tr>
             </table>
             `;
-
-            // Make sure the chart and filter divs are in a child container for layout
-            const chartFilterContainer = dashboardDiv.querySelector('.chart-filter-container') ||
-            (() => {
-                const div = document.createElement('div');
-                div.className = 'chart-filter-container';
-                div.appendChild(document.getElementById(filterId));
-                div.appendChild(document.getElementById(chartId));
-                dashboardDiv.insertBefore(div, tableDiv);
-                return div;
-            })();
 
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
             var itemFilter = new google.visualization.ControlWrapper({
