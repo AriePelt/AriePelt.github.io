@@ -35,7 +35,7 @@
         }
 
         function drawTagChart(item, dashboardId, filterId, chartId, dayChartId) {
-            console.log(`Drawing chart for item: ${item}`);
+            console.log(`Drawing chart for: ${item} ${dashboardId} ${filterId} ${chartId} ${dayChartId}`);
 
             const dashboardDiv = document.getElementById(dashboardId);
 
@@ -131,6 +131,7 @@
             chartFilterContainer.className = 'chart-container';
             chartFilterContainer.appendChild(document.getElementById(filterId));
             chartFilterContainer.appendChild(document.getElementById(chartId));
+            chartFilterContainer.appendChild(document.getElementById(daychartId));
             flexContainer.appendChild(chartFilterContainer);
             }
 
