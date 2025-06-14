@@ -68,7 +68,7 @@
               totalDiv.className = 'total-itemcount';
               dashboardDiv.insertBefore(totalDiv, dashboardDiv.firstChild);
             }
-            totalDiv.innerHTML = `<strong>Total ItemCount for ${crop}: ${totalItemCount}</strong>`;
+            totalDiv.innerHTML = `<strong>Total ItemCount for ${item}: ${totalItemCount}</strong>`;
 
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
             var itemFilter = new google.visualization.ControlWrapper({
@@ -86,7 +86,7 @@
             });
 
             var options = {
-              title: `White Tiger economic data - ${crop}`,
+              title: `White Tiger economic data - ${item}`,
               curveType: 'function',
               seriesType: 'bars',
               bar: { groupWidth: '80%' },
@@ -120,7 +120,7 @@
     </script>
   </head>
   <body>
-    <h2>${tag} Charts</h2>
+    <h2>Charts</h2>
     <!-- Charts will be appended here -->
   </body>
 </html>
