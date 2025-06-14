@@ -26,15 +26,15 @@
                 div.innerHTML = `
                     <div id="filter_div_${item}"></div>
                     <div id="chart_div_${item}"></div>
-                    <div id="dailychart_div_${item}"></div>
+                    <div id="daychart_div_${item}"></div>
                 `;
                 document.body.appendChild(div);
-                drawTagChart(item, div.id, `filter_div_${item}`, `chart_div_${item}`);
+                drawTagChart(item, div.id, `filter_div_${item}`, `chart_div_${item}`, `daychart_div_${item}`);
                 });
             });
         }
 
-        function drawTagChart(item, dashboardId, filterId, chartId) {
+        function drawTagChart(item, dashboardId, filterId, chartId, dayChartId) {
             console.log(`Drawing chart for item: ${item}`);
 
             const dashboardDiv = document.getElementById(dashboardId);
@@ -213,7 +213,7 @@
             // Draw the bar chart
             var dailyChart = new google.visualization.ChartWrapper({
                 chartType: 'ColumnChart',
-                containerId: chartId,
+                containerId: dayChartId,
                 options: {
                     title: 'ItemCount Per Day',
                     width: 900,
