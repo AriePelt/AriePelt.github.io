@@ -22,9 +22,11 @@
                 console.log(`Processing item: ${item}`);
                 // Create a container for each crop chart
                 const div = document.createElement('div');
-                div.id = `dashboard_div_${item}`;
-                div.innerHTML = `
+                div.id = `
+                    dashboard_div_${item}
                     <h3>${item}</h3>
+                `;
+                div.innerHTML = `
                     <div id="filter_div_${item}"></div>
                     <div id="chart_div_${item}"></div>
                 `;
@@ -83,8 +85,8 @@
             // Set the table HTML
             tableDiv.innerHTML = `
             <table border="1" style="border-collapse:collapse;">
-                <tr><th>Crop</th><th>Total ItemCount</th></tr>
-                <tr><td>${item}</td><td>${totalItemCount}</td></tr>
+                <tr><th></th><th>${item}</th></tr>
+                <tr><td>Total sold</td><td>${totalItemCount}</td></tr>
             </table>
             `;
 
