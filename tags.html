@@ -66,6 +66,11 @@
                     if (itemUsed === item) {
                         const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
                         totalItemCount += itemCount;
+
+                        if (!itemCountPerDay[day]) {
+                          itemCountPerDay[day] = 0;
+                        }
+                        itemCountPerDay[day] += itemCount;
                         
                         data.addRow([
                             day,
@@ -75,6 +80,8 @@
                         ]);
                     }
             }
+
+            console.log(itemCountPerDay);
 
             const dashboardDiv = document.getElementById(dashboardId);
             dashboardDiv.style.display = 'block'; // or remove this line
