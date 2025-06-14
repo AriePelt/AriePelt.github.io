@@ -49,15 +49,26 @@
             fetch(`./data/${cycle}/crr.csv`)
             .then(response => response.text())
             .then(csvText => {
-                var rows = Papa.parse(csvText, { skipEmptyLines: true }).data;
+                
+                // Create DataTable sales
                 var data = new google.visualization.DataTable();
                 data.addColumn('number', 'Time');
                 data.addColumn('string', 'ItemUsed');
                 data.addColumn('number', 'Price');
                 data.addColumn('number', 'ItemCount');
 
+                // Create DataTable for daily item count
+                var dailyData = new google.visualization.DataTable();
+                dailyData.addColumn('number', 'Day');
+                dailyData.addColumn('string', 'ItemUsed');
+                dailyData.addColumn('string', 'ItemCount');
+
+                // Set empty values for aggregates
                 let totalItemCount = 0;
                 let itemCountPerDay = {};
+
+                // Add rows to DataTable
+                var rows = Papa.parse(csvText, { skipEmptyLines: true }).data;
 
                 for (let i = 1; i < rows.length; i++) {
                     const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
@@ -78,22 +89,20 @@
                             day,
                             itemUsed,
                             price,
-                            null
+                            itemCount
                         ]);
-                        data.addRow([
+                        dailyData.addRow([
                             daykey,
                             itemUsed,
-                            null,
                             itemCountPerDay[daykey]
                         ]);
                         
                     }
             }
 
-            console.log(itemCountPerDay);
 
             const dashboardDiv = document.getElementById(dashboardId);
-            dashboardDiv.style.display = 'block'; // or remove this line
+            dashboardDiv.style.display = 'block';
 
             // Create or update the header at the very top
             let header = dashboardDiv.querySelector('.dashboard-header');
@@ -141,6 +150,19 @@
             </table>
             `;
 
+            // Create or select the daily chart container
+            let dailyChartDiv = flexContainer.querySelector('.daily-chart-div');
+            if (!dailyChartDiv) {
+                dailyChartDiv = document.createElement('div');
+                dailyChartDiv.className = 'bar-chart-div';
+                dailyChartDiv.style.width = '900px';
+                dailyChartDiv.style.height = '300px';
+                dailyChartDiv.style.marginTop = '24px';
+                flexContainer.appendChild(dailyChartDiv);
+            }
+
+
+
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
             var itemFilter = new google.visualization.ControlWrapper({
               controlType: 'CategoryFilter',
@@ -186,6 +208,23 @@
 
             dashboard.bind(itemFilter, chart);
             dashboard.draw(data);
+
+            // Draw the bar chart
+            var dailyChart = new google.visualization.ChartWrapper({
+                chartType: 'ColumnChart',
+                containerId: barChartDiv,
+                options: {
+                    title: 'ItemCount Per Day',
+                    width: 900,
+                    height: 300,
+                    legend: { position: 'none' },
+                    hAxis: { title: 'Day' },
+                    vAxis: { title: 'ItemCount' },
+                    colors: ['#5fa044']
+                }
+            });
+            dailyChart.setDataTable(dailyData);
+            dailyChart.draw();
           });
       }
     </script>
