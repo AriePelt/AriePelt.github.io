@@ -29,13 +29,13 @@
                     <div id="chart_div_${item}"></div>
                 `;
                 document.body.appendChild(div);
-                drawTagChart(`${tag}`, div.id, `filter_div_${item}`, `chart_div_${item}`);
+                drawTagChart(item, div.id, `filter_div_${item}`, `chart_div_${item}`);
                 });
             });
         }
 
-        function drawTagChart(tag, dashboardId, filterId, chartId) {
-            console.log(`Drawing chart for tag: ${tag}`);
+        function drawTagChart(item, dashboardId, filterId, chartId) {
+            console.log(`Drawing chart for item: ${item}`);
             fetch(`./data/${cycle}/crr.csv`)
             .then(response => response.text())
             .then(csvText => {
@@ -50,7 +50,7 @@
 
                 for (let i = 1; i < rows.length; i++) {
                 const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
-                if (itemUsed === `${tag}`) {
+                if (itemUsed === item) {
                 const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
                 totalItemCount += itemCount;
                     data.addRow([

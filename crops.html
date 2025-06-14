@@ -33,6 +33,7 @@
       }
 
       function drawCropChart(crop, dashboardId, filterId, chartId) {
+        console.log(`Drawing chart for crop: ${crop}`);
         fetch(`./data/${cycle}/crr.csv`)
           .then(response => response.text())
           .then(csvText => {
