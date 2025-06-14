@@ -57,6 +57,7 @@
                 data.addColumn('number', 'ItemCount');
 
                 let totalItemCount = 0;
+                let itemCountPerDay = {};
 
                 for (let i = 1; i < rows.length; i++) {
                     const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
