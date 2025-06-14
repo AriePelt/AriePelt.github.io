@@ -18,7 +18,7 @@
             fetch('./data/tags.json')
             .then(response => response.json())
             .then(tags => {
-                tags[0].$tag.forEach(item => {
+                tags[0][tag].forEach(item => {
                 // Create a container for each crop chart
                 const div = document.createElement('div');
                 div.id = `dashboard_div_${item}`;
