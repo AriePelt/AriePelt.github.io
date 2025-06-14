@@ -26,6 +26,7 @@
                 div.innerHTML = `
                     <div id="filter_div_${item}"></div>
                     <div id="chart_div_${item}"></div>
+                    <div id="dailychart_div_${item}"></div>
                 `;
                 document.body.appendChild(div);
                 drawTagChart(item, div.id, `filter_div_${item}`, `chart_div_${item}`);
@@ -154,7 +155,7 @@
             let dailyChartDiv = flexContainer.querySelector('.daily-chart-div');
             if (!dailyChartDiv) {
                 dailyChartDiv = document.createElement('div');
-                dailyChartDiv.className = 'bar-chart-div';
+                dailyChartDiv.className = 'daily-chart-div';
                 dailyChartDiv.style.width = '900px';
                 dailyChartDiv.style.height = '300px';
                 dailyChartDiv.style.marginTop = '24px';
