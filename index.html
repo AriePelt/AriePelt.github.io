@@ -23,7 +23,7 @@
       // draws it.
       function drawStuff() {
         // Load data from csv file
-        fetch('./data/${cycle}/crr.csv')
+        fetch("./data/${cycle}/crr.csv")
           .then(response => response.text())
           .then(csvText => {
             // Parse CSV
