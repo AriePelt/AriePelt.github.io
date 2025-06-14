@@ -211,10 +211,11 @@
             dashboard.bind(itemFilter, chart);
             dashboard.draw(data);
 
-            // Draw the bar chart
+            // Draw the day chart
             var dailyChart = new google.visualization.ChartWrapper({
                 chartType: 'ColumnChart',
                 containerId: dayChartId,
+                view: { columns: [0, 2] },
                 options: {
                     title: 'ItemCount Per Day',
                     width: 900,
