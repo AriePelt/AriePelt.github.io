@@ -62,16 +62,17 @@
                 for (let i = 1; i < rows.length; i++) {
                     const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
                     const day = Number(rows[i][14]) / 86400;
+                    const daykey = Math.floor(day);
                     const price = Number(rows[i][3]) / Number(rows[i][4]);
                     
                     if (itemUsed === item) {
                         const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
                         totalItemCount += itemCount;
 
-                        if (!itemCountPerDay[day]) {
-                          itemCountPerDay[day] = 0;
+                        if (!itemCountPerDay[daykey]) {
+                          itemCountPerDay[daykey] = 0;
                         }
-                        itemCountPerDay[day] += itemCount;
+                        itemCountPerDay[daykey] += itemCount;
                         
                         data.addRow([
                             day,
