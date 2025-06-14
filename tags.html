@@ -36,6 +36,8 @@
         function drawTagChart(item, dashboardId, filterId, chartId) {
             console.log(`Drawing chart for item: ${item}`);
 
+            const dashboardDiv = document.getElementById(dashboardId);
+
             let header = dashboardDiv.querySelector('.dashboard-header');
             if (!header) {
             header = document.createElement('h2');
