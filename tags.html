@@ -49,28 +49,55 @@
                 let totalItemCount = 0;
 
                 for (let i = 1; i < rows.length; i++) {
-                const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
-                if (itemUsed === item) {
-                const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
-                totalItemCount += itemCount;
-                    data.addRow([
-                    Number(rows[i][14]) / 86400,
-                    itemUsed,
-                    Number(rows[i][3]) / Number(rows[i][4]),
-                    itemCount
-                    ]);
-                }
+                    const itemUsed = rows[i][10].replace(/Item/gi, '').replace(/["']/g, '');
+                    const day = Number(rows[i][14]) / 86400;
+                    const price = Number(rows[i][3]) / Number(rows[i][4]);
+                    
+                    if (itemUsed === item) {
+                        const itemCount = Number(rows[i][4]) * Number(rows[i][13]);
+                        totalItemCount += itemCount;
+                        
+                        data.addRow([
+                            day,
+                            itemUsed,
+                            price,
+                            itemCount
+                        ]);
+                    }
             }
 
-            // Display total ItemCount above the chart
+            // Create a wrapper div for layout
             const dashboardDiv = document.getElementById(dashboardId);
-            let totalDiv = dashboardDiv.querySelector('.total-itemcount');
-            if (!totalDiv) {
-              totalDiv = document.createElement('div');
-              totalDiv.className = 'total-itemcount';
-              dashboardDiv.insertBefore(totalDiv, dashboardDiv.firstChild);
+            dashboardDiv.style.display = 'flex';
+            dashboardDiv.style.alignItems = 'flex-start';
+            
+            // Create or select the table for total ItemCount
+            let tableDiv = dashboardDiv.querySelector('.total-itemcount-table');
+            if (!tableDiv) {
+                tableDiv = document.createElement('div');
+                tableDiv.className = 'total-itemcount-table';
+                tableDiv.style.marginLeft = '24px';
+                dashboardDiv.appendChild(tableDiv);
             }
-            totalDiv.innerHTML = `<strong>Total ItemCount for ${item}: ${totalItemCount}</strong>`;
+
+            // Set the table HTML
+            tableDiv.innerHTML = `
+            <table border="1" style="border-collapse:collapse;">
+                <tr><th>Crop</th><th>Total ItemCount</th></tr>
+                <tr><td>${crop}</td><td>${totalItemCount}</td></tr>
+            </table>
+            `;
+
+            // Make sure the chart and filter divs are in a child container for layout
+            const chartFilterContainer = dashboardDiv.querySelector('.chart-filter-container') ||
+            (() => {
+                const div = document.createElement('div');
+                div.className = 'chart-filter-container';
+                div.appendChild(document.getElementById(filterId));
+                div.appendChild(document.getElementById(chartId));
+                dashboardDiv.insertBefore(div, tableDiv);
+                return div;
+            })();
 
             var dashboard = new google.visualization.Dashboard(document.getElementById(dashboardId));
             var itemFilter = new google.visualization.ControlWrapper({
