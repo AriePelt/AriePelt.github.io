@@ -22,10 +22,7 @@
                 console.log(`Processing item: ${item}`);
                 // Create a container for each crop chart
                 const div = document.createElement('div');
-                div.id = `
-                    dashboard_div_${item}
-                    <h3>${item}</h3>
-                `;
+                div.id = `dashboard_div_${item}`;
                 div.innerHTML = `
                     <div id="filter_div_${item}"></div>
                     <div id="chart_div_${item}"></div>
@@ -38,6 +35,15 @@
 
         function drawTagChart(item, dashboardId, filterId, chartId) {
             console.log(`Drawing chart for item: ${item}`);
+
+            let header = dashboardDiv.querySelector('.dashboard-header');
+            if (!header) {
+            header = document.createElement('h2');
+            header.className = 'dashboard-header';
+            dashboardDiv.insertBefore(header, dashboardDiv.firstChild);
+            }
+            header.textContent = item;
+
             fetch(`./data/${cycle}/crr.csv`)
             .then(response => response.text())
             .then(csvText => {
@@ -84,8 +90,8 @@
 
             // Set the table HTML
             tableDiv.innerHTML = `
+            <h3> Total statistics </h3>
             <table border="1" style="border-collapse:collapse;">
-                <tr><th></th><th>${item}</th></tr>
                 <tr><td>Total sold</td><td>${totalItemCount}</td></tr>
             </table>
             `;
@@ -117,7 +123,7 @@
             });
 
             var options = {
-              title: `White Tiger economic data - ${item}`,
+              title: `Daily economic data`,
               curveType: 'function',
               seriesType: 'bars',
               bar: { groupWidth: '80%' },
