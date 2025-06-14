@@ -99,10 +99,10 @@
             }
 
             // Move or create chart/filter container inside flex container
-            let chartFilterContainer = flexContainer.querySelector('.chart-filter-container');
+            let chartFilterContainer = flexContainer.querySelector('.chart-container');
             if (!chartFilterContainer) {
             chartFilterContainer = document.createElement('div');
-            chartFilterContainer.className = 'chart-filter-container';
+            chartFilterContainer.className = 'chart-container';
             chartFilterContainer.appendChild(document.getElementById(filterId));
             chartFilterContainer.appendChild(document.getElementById(chartId));
             flexContainer.appendChild(chartFilterContainer);
@@ -119,8 +119,8 @@
 
             // Set the table HTML
             tableDiv.innerHTML = `
-            <h3>Total statistics</h3>
             <table border="1" style="border-collapse:collapse;">
+                <caption>Statistics</caption>
                 <tr><td>Total sold</td><td>${totalItemCount}</td></tr>
             </table>
             `;
